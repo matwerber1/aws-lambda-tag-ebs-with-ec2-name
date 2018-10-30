@@ -56,4 +56,4 @@ Here is an example of the output from the Lambda function:
 
 Here is an example of the effect that is visible from within the EBS console: 
 
-  ![EBS Console Example](https://github.com/matwerber1/aws-lambda-tag-ec2-with-vpc-name/blob/master/images/ebs-console.png)
+  ![EBS Console Example](https://github.com/matwerber1/aws-lambda-tag-ebs-with-ec2-name/blob/master/images/ebs-console.png)
