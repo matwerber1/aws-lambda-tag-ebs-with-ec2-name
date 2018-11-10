@@ -1,3 +1,5 @@
+#!/bin/bash
+
 aws cloudformation package \
     --template-file template.yaml \
     --s3-bucket werberm-sandbox \
