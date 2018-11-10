@@ -149,4 +149,5 @@ typings/
 # Manual ignores
 ################################################################################
 ignore/
+ignore-deploy.sh
 packaged-template.yaml
