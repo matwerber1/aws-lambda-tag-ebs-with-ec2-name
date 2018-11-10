@@ -19,15 +19,7 @@ template also creates an IAM role for the Lambda that allows the function to per
 2. Within ./deploy.sh, replace YOUR_S3_BUCKET with an existing S3 bucket to use for uploading packaged template to CloudFormation. 
   
   ```sh
-  aws cloudformation package \
-      --template-file template.yaml \
-      --s3-bucket YOUR_S3_BUCKET \
-      --output-template-file packaged-template.yaml
-  
-  aws cloudformation deploy \
-      --template-file packaged-template.yaml \
-      --stack-name lambda-tag-ec2-with-vpc-name \
-      --capabilities CAPABILITY_IAM
+  BUCKET_NAME=_YOUR_S3_BUCKET
   ```
 
 3. OPTIONAL - within ./src/index.js, set config.debug to true to have the Lambda function output raw API responses to the function logs. 
