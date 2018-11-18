@@ -1,65 +1,32 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: Lambda that tags EBS volumes with an Ec2Name tag equal to the Name tag of their corresponding attached EC2 instance (if any).
+
 Resources:
 
   Function:
     Type: 'AWS::Serverless::Function'
     Properties:
+      Description: 'tag EBS volumes with an Ec2Name tag equal to the Name tag of their corresponding attached EC2 instance (if any).'
       Handler: index.handler
       Runtime: nodejs8.10
       CodeUri: ./src
-      Tracing: Active
       MemorySize: 128
       Timeout: 10
-      Description: ''
       Events:
         Timer:
           Type: Schedule
           Properties:
             Schedule: rate(24 hours)
-      Role: !GetAtt LambdaRole.Arn
-        
-  LambdaRole:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      Path: /
       Policies:
-        - PolicyName: root
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'logs:*'
-                Resource: 'arn:aws:logs:*:*:*'
-        - PolicyName: ec2
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'ec2:DescribeInstances'
-                  - 'ec2:DescribeInstanceStatus'
-                  - 'ec2:DescribeTags'
-                  - 'ec2:CreateTags'
-                  - 'ec2:DescribeVolumes'
-                  - 'xray:*'
-                Resource: '*'
-    # It takes a moment for the newly-created role to be visible to the function. 
-    # Sometimes, the role doesn't appear to exist when CloudFormation attempts
-    # to create the function and the stack creation fails. This timeout policy
-    # adds a wait buffer which (should) ensure the IAM policy is visible to the
-    # function. 
-    CreationPolicy:
-      ResourceSignal:    
-        Timeout: PT30S        # 10 seconds
+        - AWSLambdaExecute # Managed Policy
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+          - Effect: Allow
+            Action:
+            - 'ec2:DescribeInstances'
+            - 'ec2:DescribeInstanceStatus'
+            - 'ec2:DescribeTags'
+            - 'ec2:CreateTags'
+            - 'ec2:DescribeVolumes'
+            Resource: '*'
